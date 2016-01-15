@@ -1,0 +1,20 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="com.xuie.myrecyclerview.MainActivity">
+    <item
+        android:id="@+id/defaultF"
+        android:orderInCategory="100"
+        android:title="DEFAULT"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/custom"
+        android:orderInCategory="100"
+        android:title="CUSTOM"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/card"
+        android:orderInCategory="100"
+        android:title="CARD"
+        app:showAsAction="never"/>
+</menu>
