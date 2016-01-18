@@ -3,6 +3,7 @@ package com.xuie.recyclerview;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,11 +23,32 @@ public class ArrayAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public static final int ANI_NONE = 0;
     public static final int ANI_BOTTOM_IN = 1;
     public static final int ANI_RIGHT_IN = 2;
+    public static final int ANI_CUSTOM = 3;
+
+    OnItemClickListener mOnItemClickListener;
+
+    OnItemLongClickListener mOnItemLongClickListener;
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
+    public interface OnItemLongClickListener {
+        boolean onItemLongClick(View view, int position);
+    }
+
+    public void setOnItemClickListener(@Nullable OnItemClickListener listener) {
+        mOnItemClickListener = listener;
+    }
+
+    public void setOnItemLongClickListener(@Nullable OnItemLongClickListener listener) {
+        mOnItemLongClickListener = listener;
+    }
 
     private int mResource;
     private int mFieldId = 0;
     private List<T> mObjects;
-    private int lastPosition = -1;
+    private int mLastPosition = -1;
     private int mAnimType;
     private int mAnimId;
 
@@ -51,7 +73,8 @@ public class ArrayAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new MyHolder(LayoutInflater.from(parent.getContext()).inflate(mResource, parent, false));
+        return new MyHolder(LayoutInflater.from(parent.getContext())
+                .inflate(mResource, parent, false));
     }
 
     @Override
@@ -91,13 +114,19 @@ public class ArrayAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
+    public void setCustomAnimation(int animId) {
+        mAnimId = animId;
+        mAnimType = ANI_CUSTOM;
+    }
+
     private void startAnimation(View viewToAnimate, int position) {
-        if (position > lastPosition) {
+        if (position > mLastPosition) {
             if (mAnimType != ANI_NONE) {
-                Animation animation = AnimationUtils.loadAnimation(viewToAnimate.getContext(), mAnimId);
+                Animation animation = AnimationUtils
+                        .loadAnimation(viewToAnimate.getContext(), mAnimId);
                 viewToAnimate.startAnimation(animation);
             }
-            lastPosition = position;
+            mLastPosition = position;
         }
     }
 
@@ -106,9 +135,25 @@ public class ArrayAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return mObjects.size();
     }
 
-    static class MyHolder extends RecyclerView.ViewHolder {
+    class MyHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener, View.OnLongClickListener {
         public MyHolder(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (mOnItemClickListener != null) {
+                mOnItemClickListener.onItemClick(v, getAdapterPosition());
+            }
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            return mOnItemLongClickListener != null
+                    && mOnItemLongClickListener.onItemLongClick(v, getAdapterPosition());
         }
     }
 }

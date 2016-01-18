@@ -6,13 +6,17 @@ Usag
 
 ```
 dependencies {    
-    compile 'com.xuie:recyclerview:0.0.1'
+    compile 'com.xuie:recyclerview:0.0.2'
 }    
 ```
 
 ```
-arrayAdapter = new ArrayAdapter<String>(android.R.layout.simple_list_item_1, strings);
+ArrayAdapter arrayAdapter = new ArrayAdapter<String>(android.R.layout.simple_list_item_1, strings);
 arrayAdapter.setAnimation(ArrayAdapter.ANI_BOTTOM_IN);
+// arrayAdapter.setCustomAnimation(R.anim.item_custom);
+// arrayAdapter.setOnItemClickListener(this);
+recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+recycler.setAdapter(arrayAdapter);
 ```
 
 License

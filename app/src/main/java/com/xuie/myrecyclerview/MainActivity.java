@@ -49,10 +49,10 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.defaultF) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.frameLayout, SimpleRecyclerViewFragment.newInstance(0)).commit();
-        } else if (id == R.id.custom) {
+        } else if (id == R.id.example1) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.frameLayout, SimpleRecyclerViewFragment.newInstance(1)).commit();
-        } else if (id == R.id.card) {
+        } else if (id == R.id.example2) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.frameLayout, SimpleRecyclerViewFragment.newInstance(2)).commit();
         }
