@@ -1,15 +1,17 @@
 A SIMPLE RECYCLER VIEW
---------
+---
 
 Usage
-------
+---
 
+- build.gradle  
 ```
 dependencies {
     compile 'com.xuie:recyclerview:1.0.3'
 }
 ```
 
+- code  
 ```
 ArrayAdapter arrayAdapter = new ArrayAdapter<String>(android.R.layout.simple_list_item_1, strings);
 arrayAdapter.setAnimation(ArrayAdapter.ANI_BOTTOM_IN);
@@ -21,7 +23,7 @@ recycler.setAdapter(arrayAdapter);
 ```
 
 License
--------
+---
 ```
 Copyright (C)  coolxuj Open Source Project
 
