@@ -1,13 +1,13 @@
 A SIMPLE RECYCLER VIEW
 --------
 
-Usag
+Usage
 ------
 
 ```
-dependencies {    
-    compile 'com.xuie:recyclerview:0.0.2'
-}    
+dependencies {
+    compile 'com.xuie:recyclerview:1.0.3'
+}
 ```
 
 ```
@@ -15,6 +15,7 @@ ArrayAdapter arrayAdapter = new ArrayAdapter<String>(android.R.layout.simple_lis
 arrayAdapter.setAnimation(ArrayAdapter.ANI_BOTTOM_IN);
 // arrayAdapter.setCustomAnimation(R.anim.item_custom);
 // arrayAdapter.setOnItemClickListener(this);
+// arrayAdapter.setOnceAnimation(true);
 recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
 recycler.setAdapter(arrayAdapter);
 ```
