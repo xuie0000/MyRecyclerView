@@ -25,9 +25,9 @@ public class ArrayAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public static final int ANI_RIGHT_IN = 2;
     public static final int ANI_CUSTOM = 3;
 
-    OnItemClickListener mOnItemClickListener;
+    private OnItemClickListener mOnItemClickListener;
 
-    OnItemLongClickListener mOnItemLongClickListener;
+    private OnItemLongClickListener mOnItemLongClickListener;
 
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
@@ -49,8 +49,9 @@ public class ArrayAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private int mFieldId = 0;
     private List<T> mObjects;
     private int mLastPosition = -1;
-    private int mAnimType;
-    private int mAnimId;
+    private int mAnimationType;
+    private int mAnimationId;
+    private boolean mEnableOnceAnimation = false;
 
     public ArrayAdapter(@LayoutRes int resource, @NonNull T[] objects) {
         this(resource, 0, objects);
@@ -73,8 +74,7 @@ public class ArrayAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new MyHolder(LayoutInflater.from(parent.getContext())
-                .inflate(mResource, parent, false));
+        return new MyHolder(LayoutInflater.from(parent.getContext()).inflate(mResource, parent, false));
     }
 
     @Override
@@ -105,29 +105,33 @@ public class ArrayAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public void setAnimation(int type) {
         if (type >= ANI_NONE && type <= ANI_RIGHT_IN) {
-            mAnimType = type;
+            mAnimationType = type;
             if (type == ANI_BOTTOM_IN) {
-                mAnimId = R.anim.item_bottom_in;
+                mAnimationId = R.anim.item_bottom_in;
             } else if (type == ANI_RIGHT_IN) {
-                mAnimId = R.anim.item_right_in;
+                mAnimationId = R.anim.item_right_in;
             }
         }
     }
 
     public void setCustomAnimation(int animId) {
-        mAnimId = animId;
-        mAnimType = ANI_CUSTOM;
+        mAnimationId = animId;
+        mAnimationType = ANI_CUSTOM;
     }
 
     private void startAnimation(View viewToAnimate, int position) {
-        if (position > mLastPosition) {
-            if (mAnimType != ANI_NONE) {
-                Animation animation = AnimationUtils
-                        .loadAnimation(viewToAnimate.getContext(), mAnimId);
-                viewToAnimate.startAnimation(animation);
-            }
+        if (mAnimationType == ANI_NONE)
+            return;
+
+        if (!mEnableOnceAnimation || position > mLastPosition) {
+            Animation animation = AnimationUtils.loadAnimation(viewToAnimate.getContext(), mAnimationId);
+            viewToAnimate.startAnimation(animation);
             mLastPosition = position;
         }
+    }
+
+    public void setOnceAnimation(boolean mEnableOnceAnimation) {
+        this.mEnableOnceAnimation = mEnableOnceAnimation;
     }
 
     @Override
@@ -135,9 +139,8 @@ public class ArrayAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return mObjects.size();
     }
 
-    class MyHolder extends RecyclerView.ViewHolder
-            implements View.OnClickListener, View.OnLongClickListener {
-        public MyHolder(View itemView) {
+    private class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+        MyHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
@@ -145,15 +148,14 @@ public class ArrayAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         @Override
         public void onClick(View v) {
-            if (mOnItemClickListener != null) {
+            if (mOnItemClickListener != null && getAdapterPosition() != -1) {
                 mOnItemClickListener.onItemClick(v, getAdapterPosition());
             }
         }
 
         @Override
         public boolean onLongClick(View v) {
-            return mOnItemLongClickListener != null
-                    && mOnItemLongClickListener.onItemLongClick(v, getAdapterPosition());
+            return mOnItemLongClickListener != null && getAdapterPosition() != -1 && mOnItemLongClickListener.onItemLongClick(v, getAdapterPosition());
         }
     }
 }
