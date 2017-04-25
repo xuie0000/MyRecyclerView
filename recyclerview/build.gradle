@@ -5,7 +5,6 @@ apply plugin: 'com.novoda.bintray-release'
 android {
     compileSdkVersion 25
     buildToolsVersion '25.0.2'
-//    resourcePrefix "recyclerview"
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 25
@@ -38,58 +37,4 @@ publish {
     desc = 'Oh hi, this is a nice simple recyclerView adapter'
     website = 'https://github.com/xuie0000/SimpleRecyclerViewAdapter'
 }
-
-//def siteUrl = 'https://github.com/xuie0000/SimpleRecyclerview'
-//def gitUrl = 'https://github.com/xuie0000/SimpleRecyclerview.git'
-//group = "com.xuie"
-//
-//
-//install {
-//    repositories.mavenInstaller {
-//        // This generates POM.xml with proper parameters
-//        pom {
-//            project {
-//                packaging 'aar'
-//                name 'Simple RecyclerView'
-//                url siteUrl
-//                // Set your license
-//                licenses {
-//                    license {
-//                        name 'The Apache Software License, Version 2.0'
-//                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-//                    }
-//                }
-//                developers {
-//                    developer {
-//                        id 'xuie0000'
-//                        name 'xuie0000'
-//                        email 'xuie00000@gmail.com'
-//                    }
-//                }
-//                scm {
-//                    connection gitUrl
-//                    developerConnection gitUrl
-//                    url siteUrl
-//                }
-//            }
-//        }
-//    }
-//}
-
-//
-//Properties properties = new Properties()
-//properties.load(project.rootProject.file('local.properties').newDataInputStream())
-//bintray {
-//    user = properties.getProperty("bintray.user")
-//    key = properties.getProperty("bintray.apikey")
-//    configurations = ['archives']
-//    pkg {
-//        repo = "maven"
-//        name = "SimpleRecyclerview"
-//        websiteUrl = siteUrl
-//        vcsUrl = gitUrl
-//        licenses = ["Apache-2.0"]
-//        publish = true
-//    }
-//}
 
