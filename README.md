@@ -1,5 +1,8 @@
-A SIMPLE RECYCLER VIEW
+A SIMPLE RECYCLER VIEW ADAPTER
 ---
+
+> 练习运用novoda做分享库
+> gradlew build bintrayUpload -PbintrayUser=xxx -PbintrayKey=xxx -PdryRun=false
 
 Usage
 ---
@@ -7,35 +10,11 @@ Usage
 - build.gradle  
 ```
 dependencies {
-    compile 'com.xuie:recyclerview:1.0.3'
+    compile 'com.xuie:recyclerview-adapter:1.0.4'
 }
 ```
 
-- code  
-```
-ArrayAdapter arrayAdapter = new ArrayAdapter<String>(android.R.layout.simple_list_item_1, strings);
-arrayAdapter.setAnimation(ArrayAdapter.ANI_BOTTOM_IN);
-// arrayAdapter.setCustomAnimation(R.anim.item_custom);
-// arrayAdapter.setOnItemClickListener(this);
-// arrayAdapter.setOnceAnimation(true);
-recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
-recycler.setAdapter(arrayAdapter);
-```
+- Code
 
-License
----
-```
-Copyright (C)  xuie0000 Open Source Project
+[CymChad-BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper/blob/master/README-cn.md)
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-```
