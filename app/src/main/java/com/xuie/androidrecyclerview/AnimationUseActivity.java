@@ -55,11 +55,11 @@ public class AnimationUseActivity extends Activity {
         mAnimationAdapter = new AnimationAdapter();
         mAnimationAdapter.openLoadAnimation();
         mAnimationAdapter.setNotDoAnimationCount(mFirstPageItemCount);
-        mAnimationAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener<Status>() {
+        mAnimationAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
-            public void onItemChildClick(BaseQuickAdapter<Status, ? extends BaseViewHolder> adapter, View view, int position) {
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 String content = null;
-                Status status = adapter.getItem(position);
+                Status status = (Status) adapter.getItem(position);
                 switch (view.getId()) {
                     case R.id.img:
                         content = "img:" + status.getUserAvatar();
@@ -113,6 +113,7 @@ public class AnimationUseActivity extends Activity {
                 mRecyclerView.setAdapter(mAnimationAdapter);
             }
         });
+        mAnimationAdapter.isFirstOnly(false);//init firstOnly state
         SwitchButton switchButton = (SwitchButton) findViewById(R.id.switch_button);
         switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

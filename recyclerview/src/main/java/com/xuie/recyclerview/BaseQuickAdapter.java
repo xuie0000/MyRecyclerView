@@ -17,8 +17,10 @@ package com.xuie.recyclerview;
 
 import android.animation.Animator;
 import android.content.Context;
+import android.support.annotation.IdRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.IntRange;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -92,10 +94,10 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
      * Use with {@link #openLoadAnimation}
      */
     public static final int SLIDEIN_RIGHT = 0x00000005;
-    private OnItemClickListener<T> mOnItemClickListener;
-    private OnItemLongClickListener<T> mOnItemLongClickListener;
-    private OnItemChildClickListener<T> mOnItemChildClickListener;
-    private OnItemChildLongClickListener<T> mOnItemChildLongClickListener;
+    private OnItemClickListener mOnItemClickListener;
+    private OnItemLongClickListener mOnItemLongClickListener;
+    private OnItemChildClickListener mOnItemChildClickListener;
+    private OnItemChildLongClickListener mOnItemChildLongClickListener;
 
     @IntDef({ALPHAIN, SCALEIN, SLIDEIN_BOTTOM, SLIDEIN_LEFT, SLIDEIN_RIGHT})
     @Retention(RetentionPolicy.SOURCE)
@@ -379,18 +381,18 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
      * @param layoutResId The layout resource id of each item.
      * @param data        A new list is created out of this one to avoid mutable list
      */
-    public BaseQuickAdapter(int layoutResId, List<T> data) {
+    public BaseQuickAdapter(@LayoutRes int layoutResId, @Nullable List<T> data) {
         this.mData = data == null ? new ArrayList<T>() : data;
         if (layoutResId != 0) {
             this.mLayoutResId = layoutResId;
         }
     }
 
-    public BaseQuickAdapter(List<T> data) {
+    public BaseQuickAdapter(@Nullable List<T> data) {
         this(0, data);
     }
 
-    public BaseQuickAdapter(int layoutResId) {
+    public BaseQuickAdapter(@LayoutRes int layoutResId) {
         this(layoutResId, null);
     }
 
@@ -399,7 +401,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
      *
      * @param data
      */
-    public void setNewData(List<T> data) {
+    public void setNewData(@Nullable List<T> data) {
         this.mData = data == null ? new ArrayList<T>() : data;
         if (mRequestLoadMoreListener != null) {
             mNextLoadEnable = true;
@@ -420,7 +422,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
      * @deprecated use {@link #addData(int, Object)} instead
      */
     @Deprecated
-    public void add(int position, T item) {
+    public void add(@IntRange(from = 0) int position, @NonNull T item) {
         addData(position, item);
     }
 
@@ -429,7 +431,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
      *
      * @param position
      */
-    public void addData(int position, T data) {
+    public void addData(@IntRange(from = 0) int position, @NonNull T data) {
         mData.add(position, data);
         notifyItemInserted(position + getHeaderLayoutCount());
         compatibilityDataSizeChanged(1);
@@ -438,7 +440,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
     /**
      * add one new data
      */
-    public void addData(T data) {
+    public void addData(@NonNull T data) {
         mData.add(data);
         notifyItemInserted(mData.size() + getHeaderLayoutCount());
         compatibilityDataSizeChanged(1);
@@ -449,7 +451,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
      *
      * @param position
      */
-    public void remove(int position) {
+    public void remove(@IntRange(from = 0) int position) {
         mData.remove(position);
         int internalPosition = position + getHeaderLayoutCount();
         notifyItemRemoved(internalPosition);
@@ -460,7 +462,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
     /**
      * change data
      */
-    public void setData(int index, T data) {
+    public void setData(@IntRange(from = 0) int index, @NonNull T data) {
         mData.set(index, data);
         notifyItemChanged(index + getHeaderLayoutCount());
     }
@@ -470,7 +472,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
      *
      * @param position
      */
-    public void addData(int position, List<T> data) {
+    public void addData(@IntRange(from = 0) int position, @NonNull List<T> data) {
         mData.addAll(position, data);
         notifyItemRangeInserted(position + getHeaderLayoutCount(), data.size());
         compatibilityDataSizeChanged(data.size());
@@ -481,7 +483,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
      *
      * @param newData
      */
-    public void addData(List<T> newData) {
+    public void addData(@NonNull List<T> newData) {
         this.mData.addAll(newData);
         notifyItemRangeInserted(mData.size() - newData.size() + getHeaderLayoutCount(), newData.size());
         compatibilityDataSizeChanged(newData.size());
@@ -504,6 +506,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
      *
      * @return
      */
+    @NonNull
     public List<T> getData() {
         return mData;
     }
@@ -515,8 +518,9 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
      *                 data set.
      * @return The data at the specified position.
      */
-    public T getItem(int position) {
-        if (position != -1)
+    @Nullable
+    public T getItem(@IntRange(from = 0) int position) {
+        if (position < mData.size())
             return mData.get(position);
         else
             return null;
@@ -736,16 +740,50 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
                 @Override
                 public int getSpanSize(int position) {
                     int type = getItemViewType(position);
-                    if (mSpanSizeLookup == null)
-                        return (type == EMPTY_VIEW || type == HEADER_VIEW || type == FOOTER_VIEW || type ==
-                                LOADING_VIEW) ? gridManager.getSpanCount() : 1;
-                    else
-                        return (type == EMPTY_VIEW || type == HEADER_VIEW || type == FOOTER_VIEW || type ==
-                                LOADING_VIEW) ? gridManager.getSpanCount() : mSpanSizeLookup.getSpanSize(gridManager,
+                    if (type == HEADER_VIEW && isHeaderViewAsFlow()) {
+                        return 1;
+                    }
+                    if (type == FOOTER_VIEW && isFooterViewAsFlow()) {
+                        return 1;
+                    }
+                    if (mSpanSizeLookup == null) {
+                        return isFixedViewType(type) ? gridManager.getSpanCount() : 1;
+                    } else {
+                        return (isFixedViewType(type)) ? gridManager.getSpanCount() : mSpanSizeLookup.getSpanSize(gridManager,
                                 position - getHeaderLayoutCount());
+                    }
                 }
+
+
             });
         }
+    }
+
+    protected boolean isFixedViewType(int type) {
+        return type == EMPTY_VIEW || type == HEADER_VIEW || type == FOOTER_VIEW || type ==
+                LOADING_VIEW;
+    }
+
+    /**
+     * if asFlow is true, footer/header will arrange like normal item view.
+     * only works when use {@link GridLayoutManager},and it will ignore span size.
+     */
+    private boolean headerViewAsFlow, footerViewAsFlow;
+
+    public void setHeaderViewAsFlow(boolean headerViewAsFlow) {
+        this.headerViewAsFlow = headerViewAsFlow;
+    }
+
+    public boolean isHeaderViewAsFlow() {
+        return headerViewAsFlow;
+    }
+
+    public void setFooterViewAsFlow(boolean footerViewAsFlow) {
+        this.footerViewAsFlow = footerViewAsFlow;
+    }
+
+    public boolean isFooterViewAsFlow() {
+        return footerViewAsFlow;
     }
 
     private SpanSizeLookup mSpanSizeLookup;
@@ -798,14 +836,14 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
         if (baseViewHolder == null) {
             return;
         }
-        final View view = baseViewHolder.getConvertView();
+        final View view = baseViewHolder.itemView;
         if (view == null) {
             return;
         }
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (getOnItemClickListener() != null && baseViewHolder != null) {
+                if (getOnItemClickListener() != null) {
 
                     getOnItemClickListener().onItemClick(BaseQuickAdapter.this, v, baseViewHolder.getLayoutPosition() - getHeaderLayoutCount());
                 }
@@ -815,11 +853,8 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
         view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if (getOnItemLongClickListener() != null && baseViewHolder != null) {
-                    return getOnItemLongClickListener().onItemLongClick(BaseQuickAdapter.this, v, baseViewHolder.getLayoutPosition() - getHeaderLayoutCount());
-                }
-                return false;
-
+                return getOnItemLongClickListener() != null &&
+                        getOnItemLongClickListener().onItemLongClick(BaseQuickAdapter.this, v, baseViewHolder.getLayoutPosition() - getHeaderLayoutCount());
             }
         });
     }
@@ -853,6 +888,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
      * @param view view
      * @return new ViewHolder
      */
+    @SuppressWarnings("unchecked")
     protected K createBaseViewHolder(View view) {
         Class temp = getClass();
         Class z = null;
@@ -871,6 +907,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
      * @param view
      * @return
      */
+    @SuppressWarnings("unchecked")
     private K createGenericKInstance(Class z, View view) {
         try {
             Constructor constructor;
@@ -1318,7 +1355,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
      *                    hierarchy
      * @return view will be return
      */
-    protected View getItemView(int layoutResId, ViewGroup parent) {
+    protected View getItemView(@LayoutRes int layoutResId, ViewGroup parent) {
         return mLayoutInflater.inflate(layoutResId, parent, false);
     }
 
@@ -1401,16 +1438,19 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
      *
      * @see #bindToRecyclerView(RecyclerView)
      */
-    public View getViewByPosition(int position, int viewId) {
+    public View getViewByPosition(int position, @IdRes int viewId) {
         checkNotNull();
         return getViewByPosition(getRecyclerView(), position, viewId);
     }
 
-    public View getViewByPosition(RecyclerView recyclerView, int position, int viewId) {
+    public View getViewByPosition(RecyclerView recyclerView, int position, @IdRes int viewId) {
         if (recyclerView == null) {
             return null;
         }
         BaseViewHolder viewHolder = (BaseViewHolder) recyclerView.findViewHolderForLayoutPosition(position);
+        if (viewHolder == null) {
+            return null;
+        }
         return viewHolder.getView(viewId);
     }
 
@@ -1425,6 +1465,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
         return position;
     }
 
+    @SuppressWarnings("unchecked")
     private int recursiveExpand(int position, @NonNull List list) {
         int count = 0;
         int pos = position + list.size() - 1;
@@ -1452,6 +1493,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
      *                     yourself.
      * @return the number of items that have been added.
      */
+    @SuppressWarnings("unchecked")
     public int expand(@IntRange(from = 0) int position, boolean animate, boolean shouldNotify) {
         position -= getHeaderLayoutCount();
 
@@ -1514,7 +1556,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
         }
 
         IExpandable expandable = getExpandableItem(position);
-        if (!hasSubItems(expandable)) {
+        if (expandable == null || !hasSubItems(expandable)) {
             return 0;
         }
 
@@ -1553,11 +1595,12 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
     }
 
     public void expandAll() {
-        for (int i = mData.size() - 1; i >=0; i--) {
+        for (int i = mData.size() - 1; i >= 0; i--) {
             expandAll(i, false, false);
         }
     }
 
+    @SuppressWarnings("unchecked")
     private int recursiveCollapse(@IntRange(from = 0) int position) {
         T item = getItem(position);
         if (!isExpandable(item)) {
@@ -1637,6 +1680,9 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
     }
 
     private boolean hasSubItems(IExpandable item) {
+        if (item == null) {
+            return false;
+        }
         List list = item.getSubItems();
         return list != null && list.size() > 0;
     }
@@ -1698,7 +1744,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
      * Interface definition for a callback to be invoked when an itemchild in this
      * view has been clicked
      */
-    public interface OnItemChildClickListener<T> {
+    public interface OnItemChildClickListener {
         /**
          * callback method to be invoked when an item in this view has been
          * click and held
@@ -1706,7 +1752,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
          * @param view     The view whihin the ItemView that was clicked
          * @param position The position of the view int the adapter
          */
-        void onItemChildClick(BaseQuickAdapter<T, ? extends BaseViewHolder> adapter, View view, int position);
+        void onItemChildClick(BaseQuickAdapter adapter, View view, int position);
     }
 
 
@@ -1714,7 +1760,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
      * Interface definition for a callback to be invoked when an childView in this
      * view has been clicked and held.
      */
-    public interface OnItemChildLongClickListener<T> {
+    public interface OnItemChildLongClickListener {
         /**
          * callback method to be invoked when an item in this view has been
          * click and held
@@ -1723,14 +1769,14 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
          * @param position The position of the view int the adapter
          * @return true if the callback consumed the long click ,false otherwise
          */
-        boolean onItemChildLongClick(BaseQuickAdapter<T, ? extends BaseViewHolder> adapter, View view, int position);
+        boolean onItemChildLongClick(BaseQuickAdapter adapter, View view, int position);
     }
 
     /**
      * Interface definition for a callback to be invoked when an item in this
      * view has been clicked and held.
      */
-    public interface OnItemLongClickListener<T> {
+    public interface OnItemLongClickListener {
         /**
          * callback method to be invoked when an item in this view has been
          * click and held
@@ -1740,7 +1786,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
          * @param position The position of the view int the adapter
          * @return true if the callback consumed the long click ,false otherwise
          */
-        boolean onItemLongClick(BaseQuickAdapter<T, ? extends BaseViewHolder> adapter, View view, int position);
+        boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position);
     }
 
 
@@ -1748,7 +1794,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
      * Interface definition for a callback to be invoked when an item in this
      * RecyclerView itemView has been clicked.
      */
-    public interface OnItemClickListener<T> {
+    public interface OnItemClickListener {
 
         /**
          * Callback method to be invoked when an item in this RecyclerView has
@@ -1759,7 +1805,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
          *                 will be a view provided by the adapter)
          * @param position The position of the view in the adapter.
          */
-        void onItemClick(BaseQuickAdapter<T, ? extends BaseViewHolder> adapter, View view, int position);
+        void onItemClick(BaseQuickAdapter adapter, View view, int position);
     }
 
     /**
@@ -1768,7 +1814,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
      *
      * @param listener The callback that will be invoked.
      */
-    public void setOnItemClickListener(@Nullable OnItemClickListener<T> listener) {
+    public void setOnItemClickListener(@Nullable OnItemClickListener listener) {
         mOnItemClickListener = listener;
     }
 
@@ -1778,7 +1824,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
      *
      * @param listener The callback that will run
      */
-    public void setOnItemChildClickListener(OnItemChildClickListener<T> listener) {
+    public void setOnItemChildClickListener(OnItemChildClickListener listener) {
         mOnItemChildClickListener = listener;
     }
 
@@ -1788,7 +1834,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
      *
      * @param listener The callback that will run
      */
-    public void setOnItemLongClickListener(OnItemLongClickListener<T> listener) {
+    public void setOnItemLongClickListener(OnItemLongClickListener listener) {
         mOnItemLongClickListener = listener;
     }
 
@@ -1798,7 +1844,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
      *
      * @param listener The callback that will run
      */
-    public void setOnItemChildLongClickListener(OnItemChildLongClickListener<T> listener) {
+    public void setOnItemChildLongClickListener(OnItemChildLongClickListener listener) {
         mOnItemChildLongClickListener = listener;
     }
 
@@ -1807,7 +1853,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
      * @return The callback to be invoked with an item in this RecyclerView has
      * been long clicked and held, or null id no callback as been set.
      */
-    public final OnItemLongClickListener<T> getOnItemLongClickListener() {
+    public final OnItemLongClickListener getOnItemLongClickListener() {
         return mOnItemLongClickListener;
     }
 
@@ -1815,7 +1861,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
      * @return The callback to be invoked with an item in this RecyclerView has
      * been clicked and held, or null id no callback as been set.
      */
-    public final OnItemClickListener<T> getOnItemClickListener() {
+    public final OnItemClickListener getOnItemClickListener() {
         return mOnItemClickListener;
     }
 
@@ -1824,7 +1870,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
      * been clicked, or null id no callback has been set.
      */
     @Nullable
-    public final OnItemChildClickListener<T> getOnItemChildClickListener() {
+    public final OnItemChildClickListener getOnItemChildClickListener() {
         return mOnItemChildClickListener;
     }
 
@@ -1833,7 +1879,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
      * been long clicked, or null id no callback has been set.
      */
     @Nullable
-    public final OnItemChildLongClickListener<T> getOnItemChildLongClickListener() {
+    public final OnItemChildLongClickListener getOnItemChildLongClickListener() {
         return mOnItemChildLongClickListener;
     }
 }

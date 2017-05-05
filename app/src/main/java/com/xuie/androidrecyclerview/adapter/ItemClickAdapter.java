@@ -8,7 +8,6 @@ import android.widget.Toast;
 import com.orhanobut.logger.Logger;
 import com.xuie.androidrecyclerview.R;
 import com.xuie.androidrecyclerview.entity.ClickEntity;
-import com.xuie.androidrecyclerview.entity.Status;
 import com.xuie.androidrecyclerview.util.Utils;
 import com.xuie.recyclerview.BaseMultiItemQuickAdapter;
 import com.xuie.recyclerview.BaseQuickAdapter;
@@ -19,7 +18,7 @@ import java.util.List;
 /**
  *
  */
-public class ItemClickAdapter extends BaseMultiItemQuickAdapter<ClickEntity, BaseViewHolder> implements BaseQuickAdapter.OnItemClickListener<Status>, BaseQuickAdapter.OnItemChildClickListener<Status> {
+public class ItemClickAdapter extends BaseMultiItemQuickAdapter<ClickEntity, BaseViewHolder> implements BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemChildClickListener {
     NestAdapter nestAdapter;
 
     public ItemClickAdapter(List<ClickEntity> data) {
@@ -54,7 +53,7 @@ public class ItemClickAdapter extends BaseMultiItemQuickAdapter<ClickEntity, Bas
             case ClickEntity.NEST_CLICK_ITEM_CHILD_VIEW:
                 helper.setNestView(R.id.item_click); // u can set nestview id
                 final RecyclerView recyclerView = helper.getView(R.id.nest_list);
-                recyclerView.setLayoutManager(new LinearLayoutManager(helper.getConvertView().getContext(), LinearLayoutManager.VERTICAL, false));
+                recyclerView.setLayoutManager(new LinearLayoutManager(helper.itemView.getContext(), LinearLayoutManager.VERTICAL, false));
                 recyclerView.setHasFixedSize(true);
 
                 nestAdapter = new NestAdapter();
@@ -66,12 +65,12 @@ public class ItemClickAdapter extends BaseMultiItemQuickAdapter<ClickEntity, Bas
     }
 
     @Override
-    public void onItemChildClick(BaseQuickAdapter<Status, ? extends BaseViewHolder> adapter, View view, int position) {
+    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
         Toast.makeText(Utils.getContext(), "childView click", Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void onItemClick(BaseQuickAdapter<Status, ? extends BaseViewHolder> adapter, View view, int position) {
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         Logger.d("嵌套RecycleView item 收到: " + "点击了第 " + position + " 一次");
         Toast.makeText(Utils.getContext(), "嵌套RecycleView item 收到: " + "点击了第 " + position + " 一次", Toast.LENGTH_SHORT).show();
     }

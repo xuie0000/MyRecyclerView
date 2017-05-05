@@ -42,6 +42,11 @@ public abstract class BaseSectionQuickAdapter<T extends SectionEntity, K extends
     }
 
     @Override
+    protected boolean isFixedViewType(int type) {
+        return super.isFixedViewType(type)|| type == SECTION_HEADER_VIEW;
+    }
+
+    @Override
     public void onBindViewHolder(K holder, int positions) {
         switch (holder.getItemViewType()) {
             case SECTION_HEADER_VIEW:
