@@ -1,8 +1,9 @@
 package com.xuie.androidrecyclerview;
 
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.xuie.androidrecyclerview.adapter.ExpandableItemAdapter;
 import com.xuie.androidrecyclerview.base.BaseActivity;
@@ -21,6 +22,7 @@ public class ExpandableUseActivity extends BaseActivity {
     RecyclerView mRecyclerView;
     ExpandableItemAdapter adapter;
     ArrayList<MultiItemEntity> list;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

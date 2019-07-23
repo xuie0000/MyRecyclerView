@@ -1,11 +1,12 @@
 package com.xuie.androidrecyclerview.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.xuie.androidrecyclerview.R;
 import com.xuie.androidrecyclerview.data.DataServer;
@@ -20,6 +21,7 @@ public class DefAdpater extends RecyclerView.Adapter<DefAdpater.ViewHolder> {
     private final List<Status> sampleData = DataServer.getSampleData(100);
     private Context mContext;
     private LayoutInflater mLayoutInflater;
+
     public DefAdpater(Context context) {
         mContext = context;
         mLayoutInflater = LayoutInflater.from(context);

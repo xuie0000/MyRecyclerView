@@ -1,9 +1,10 @@
 package com.xuie.androidrecyclerview.adapter;
 
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.orhanobut.logger.Logger;
 import com.xuie.androidrecyclerview.R;

@@ -1,18 +1,18 @@
 package com.xuie.androidrecyclerview;
 
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.xuie.androidrecyclerview.adapter.ItemClickAdapter;
 import com.xuie.androidrecyclerview.base.BaseActivity;
 import com.xuie.androidrecyclerview.entity.ClickEntity;
 import com.xuie.recyclerview.BaseQuickAdapter;
-import com.xuie.recyclerview.BaseViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;

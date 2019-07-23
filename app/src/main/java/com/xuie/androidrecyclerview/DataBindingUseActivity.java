@@ -1,16 +1,16 @@
 package com.xuie.androidrecyclerview;
 
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.xuie.androidrecyclerview.adapter.DataBindingUseAdapter;
 import com.xuie.androidrecyclerview.base.BaseActivity;
 import com.xuie.androidrecyclerview.entity.Movie;
 import com.xuie.androidrecyclerview.util.ToastUtils;
 import com.xuie.recyclerview.BaseQuickAdapter;
-import com.xuie.recyclerview.BaseViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;

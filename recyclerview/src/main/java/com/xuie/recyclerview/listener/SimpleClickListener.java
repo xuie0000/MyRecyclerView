@@ -1,12 +1,13 @@
 package com.xuie.recyclerview.listener;
 
 import android.os.Build;
-import android.support.v4.view.GestureDetectorCompat;
-import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
+
+import androidx.core.view.GestureDetectorCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.xuie.recyclerview.BaseQuickAdapter;
 import com.xuie.recyclerview.BaseViewHolder;

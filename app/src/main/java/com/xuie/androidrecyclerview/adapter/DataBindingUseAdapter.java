@@ -1,7 +1,7 @@
 package com.xuie.androidrecyclerview.adapter;
 
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import android.view.View;
 import android.view.ViewGroup;
 

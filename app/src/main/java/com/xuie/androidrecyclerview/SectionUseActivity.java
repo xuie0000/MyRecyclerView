@@ -1,10 +1,11 @@
 package com.xuie.androidrecyclerview;
 
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.xuie.androidrecyclerview.adapter.SectionAdapter;
 import com.xuie.androidrecyclerview.base.BaseActivity;
@@ -28,7 +29,7 @@ public class SectionUseActivity extends BaseActivity {
         setBackBtn();
         setTitle("Section Use");
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_list);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this,2));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         mData = DataServer.getSampleData();
         SectionAdapter sectionAdapter = new SectionAdapter(R.layout.item_section_content, R.layout.def_section_head, mData);
 

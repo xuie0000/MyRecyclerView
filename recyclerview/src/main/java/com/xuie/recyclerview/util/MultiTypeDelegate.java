@@ -1,6 +1,6 @@
 package com.xuie.recyclerview.util;
 
-import android.support.annotation.LayoutRes;
+import androidx.annotation.LayoutRes;
 import android.util.SparseIntArray;
 
 import java.util.List;

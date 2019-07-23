@@ -2,10 +2,11 @@ package com.xuie.androidrecyclerview;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.xuie.androidrecyclerview.adapter.QuickAdapter;
 import com.xuie.androidrecyclerview.base.BaseActivity;

@@ -43,7 +43,7 @@ public abstract class BaseSectionQuickAdapter<T extends SectionEntity, K extends
 
     @Override
     protected boolean isFixedViewType(int type) {
-        return super.isFixedViewType(type)|| type == SECTION_HEADER_VIEW;
+        return super.isFixedViewType(type) || type == SECTION_HEADER_VIEW;
     }
 
     @Override

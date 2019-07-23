@@ -3,11 +3,10 @@ apply plugin: 'com.novoda.bintray-release'
 
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    compileSdkVersion 28
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 25
+        minSdkVersion 21
+        targetSdkVersion 28
         versionCode 4
         versionName "1.0.4"
     }
@@ -23,17 +22,17 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:recyclerview-v7:25.3.1'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation 'junit:junit:4.12'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
 }
 
 publish {
     userOrg = 'xuie0000'
     groupId = 'com.xuie'
     artifactId = 'recyclerview-adapter'
-    publishVersion = '1.0.4'
+    publishVersion = '1.2.0'
     desc = 'Oh hi, this is a nice simple recyclerView adapter'
     website = 'https://github.com/xuie0000/SimpleRecyclerViewAdapter'
 }

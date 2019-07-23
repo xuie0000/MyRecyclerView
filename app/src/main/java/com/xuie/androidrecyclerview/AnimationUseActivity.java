@@ -2,12 +2,13 @@ package com.xuie.androidrecyclerview;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.kyleduo.switchbutton.SwitchButton;
@@ -15,7 +16,6 @@ import com.xuie.androidrecyclerview.adapter.AnimationAdapter;
 import com.xuie.androidrecyclerview.animation.CustomAnimation;
 import com.xuie.androidrecyclerview.entity.Status;
 import com.xuie.recyclerview.BaseQuickAdapter;
-import com.xuie.recyclerview.BaseViewHolder;
 
 /**
  * https://github.com/CymChad/BaseRecyclerViewAdapterHelper

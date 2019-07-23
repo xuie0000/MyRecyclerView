@@ -1,19 +1,18 @@
 package com.xuie.androidrecyclerview;
 
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.xuie.androidrecyclerview.adapter.HeaderAndFooterAdapter;
 import com.xuie.androidrecyclerview.base.BaseActivity;
 import com.xuie.androidrecyclerview.data.DataServer;
-import com.xuie.androidrecyclerview.entity.Status;
 import com.xuie.recyclerview.BaseQuickAdapter;
-import com.xuie.recyclerview.BaseViewHolder;
 
 
 /**
