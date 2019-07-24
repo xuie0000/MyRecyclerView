@@ -20,13 +20,15 @@ android {
     dataBinding {
         enabled = true
     }
+    lintOptions {
+        abortOnError false
+    }
 
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     testImplementation 'junit:junit:4.12'
-    implementation project(':recyclerview')
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
@@ -40,4 +42,6 @@ dependencies {
     implementation 'com.kyleduo.switchbutton:library:1.4.4'
     implementation 'com.orhanobut:logger:1.15'
 
+//    implementation project(':recyclerview')
+    implementation 'com.xuie:recyclerview-adapter:1.2.0'
 }
